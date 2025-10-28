@@ -81,7 +81,7 @@
         <p class="subtitle">Come celebrate with love, cakes, and lots of balloons!</p>
         <div class="info">
           <div class="info-row"><div class="info-icon">📛</div><div><strong>Name</strong> <div>Sung Yi Yang</div></div></div>
-          <div class="info-row"><div class="info-icon">📅</div><div><strong>Date</strong> <div>22nd November 2025</div></div></div>
+          <div class="info-row"><div class="info-icon">📅</div><div><strong>Date</strong> <div>22nd November 2025, 6.30PM</div></div></div>
           <div class="info-row"><div class="info-icon">📍</div><div><strong>Venue</strong> <div>Our Residence, Taman Kasturi</div></div></div>
         </div>
         <div class="cta">
@@ -142,73 +142,34 @@
   </main>
 
   <footer class="container" style="padding-bottom:48px">
-    <div class="card" style="text-align:center">Made with ❤️ for Yi Yang’s big day • See you on <strong>22nd Nov</strong> at <strong>Our Residence, Taman Kasturi</strong></div>
+    <div class="card" style="text-align:center">Made with ❤️ for Yi Yang’s big day • See you on <strong>22nd of November 2025,6.30PM!</strong></div>
   </footer>
 
   <script>
-    // Confetti
-    const confetti = document.getElementById('confetti');
-    const pieces = 40;
-    if (confetti) {
-      for(let i=0;i<pieces;i++){
-        const s = document.createElement('span');
-        s.style.left = Math.random()*100 + '%';
-        s.style.top = Math.random()*100 + '%';
-        s.style.background = ['#ff7ab6','#7ad9ff','#ffd166','#a7f3d0'][i%4];
-        s.style.transform = `rotate(${Math.random()*360}deg)`;
-        confetti.appendChild(s);
+    const INTEGRATION_MODE = 'DIRECT_API';
+    const SHEET_ID = '1YE791pBb2A4tTaXxxDnvNjw9og-TUSbFkqg2s1A5NZk';
+    const API_KEY  = 'AIzaSyDSgs_GI5sLXr1FNjR8yEfasMbirRHQOHs';
+    const SHEET_NAME = 'YYbirthday';
+
+    async function saveToGoogle(row){
+      try {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME)}!A:D:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
+        const body = { values: [[row.name, row.guests, row.message, row.time]] };
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) {
+          const text = await res.text();
+          console.error('Sheets API error:', res.status, text);
+          return false;
+        }
+        return true;
+      } catch (err) {
+        console.error('Save to Google failed:', err);
+        return false;
       }
-    }
-
-    // Load photos
-    const strip = document.getElementById('mediaStrip');
-    const photoNames = ['IMG_5032.jpg','IMG_5187.jpg','IMG_5268.jpg','IMG_5705.jpg','IMG_5900.jpg','IMG_6305.jpg','IMG_6784.jpg','IMG_6830.jpg','IMG_6831.jpg'];
-    photoNames.forEach(name => {
-      const img = document.createElement('img');
-      img.src = `photos/${name}`;
-      img.alt = 'Yi Yang photo';
-      img.loading = 'lazy';
-      const card = document.createElement('div');
-      card.className = 'media-card';
-      card.appendChild(img);
-      strip.appendChild(card);
-    });
-
-    // RSVP functionality
-    const form = document.getElementById('rsvpForm');
-    const rsvpList = document.getElementById('rsvpList');
-    const counterText = document.getElementById('counterText');
-    const attendingBadge = document.getElementById('attending');
-
-    let rsvps = JSON.parse(localStorage.getItem('rsvps') || '[]');
-    renderRSVPs();
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const guests = parseInt(document.getElementById('guests').value);
-      const message = document.getElementById('message').value.trim();
-      if (!name) return alert('Please enter your name.');
-      const newRSVP = { name, guests, message, time: new Date().toLocaleString() };
-      rsvps.push(newRSVP);
-      localStorage.setItem('rsvps', JSON.stringify(rsvps));
-      form.reset();
-      renderRSVPs();
-      alert('Thank you for RSVPing! 🎉');
-    });
-
-    function renderRSVPs(){
-      rsvpList.innerHTML = '';
-      let total = 0;
-      rsvps.slice().reverse().forEach(r => {
-        total += r.guests;
-        const div = document.createElement('div');
-        div.className = 'rsvp-item';
-        div.innerHTML = `<div><strong>${r.name}</strong><br><span class='hint'>${r.message || ''}</span></div><div>${r.guests} attending</div>`;
-        rsvpList.appendChild(div);
-      });
-      counterText.textContent = `Attending: ${total}`;
-      attendingBadge.textContent = `Attending: ${total}`;
     }
   </script>
 </body>
