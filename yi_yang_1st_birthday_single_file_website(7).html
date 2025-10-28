@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎈 Sung Yi Yang — 1st Birthday</title>
+  <meta name="description" content="Invitation & RSVP for Sung Yi Yang's 1st Birthday"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #fff8f2;
+      --primary: #ff7ab6;
+      --primary-600: #ea5898;
+      --accent: #7ad9ff;
+      --ink: #2a2a2a;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --ring: #ffd4e9;
+      --success: #16a34a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--ink);
+      background: radial-gradient(1200px 800px at 10% -10%, #ffe3f2 0, transparent 60%),
+                  radial-gradient(900px 700px at 90% 10%, #e1f6ff 0, transparent 60%),
+                  var(--bg);
+    }
+    a{color:inherit}
+    .container{max-width:1000px;margin:0 auto;padding:24px}
+    .hero{display:grid;grid-template-columns:1.1fr 0.9fr;gap:28px;align-items:center;padding:24px 0}
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}}
+    .card{background:var(--card);border-radius:24px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:24px}
+    .title{font-family:Fredoka, Inter, sans-serif;font-weight:700;font-size:clamp(32px,5vw,52px);line-height:1.05;margin:0 0 8px}
+    .subtitle{font-family:Fredoka, Inter, sans-serif;font-weight:600;font-size:clamp(18px,2.2vw,22px);color:var(--muted);margin:0 0 16px}
+    .pill{display:inline-flex;gap:10px;align-items:center;background:#fff0f7;border:2px solid var(--ring);padding:10px 14px;border-radius:999px;font-weight:600}
+    .info{display:grid;gap:12px;margin:16px 0 0}
+    .info-row{display:flex;gap:12px;align-items:center}
+    .info-icon{width:36px;height:36px;border-radius:12px;background:#fff3f9;display:grid;place-items:center;border:1px solid var(--ring)}
+    .info strong{display:block}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{appearance:none;border:0;padding:12px 16px;border-radius:14px;font-weight:700;cursor:pointer;transition:transform .05s ease, box-shadow .2s ease}
+    .btn-primary{background:var(--primary);color:white;box-shadow:0 4px 14px rgba(255,122,182,.4)}
+    .btn-primary:hover{background:var(--primary-600)}
+    .btn:active{transform:translateY(1px)}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:#ecfeff;border:1px solid #baeaff;padding:8px 12px;border-radius:999px;font-size:14px}
+
+    .illustration{position:relative;border-radius:24px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fffaf8;}
+    .illustration img{width:100%;height:auto;max-width:100%;object-fit:contain;border-radius:24px;}
+    .confetti{position:absolute;inset:0;pointer-events:none}
+    .confetti span{position:absolute;width:10px;height:16px;border-radius:2px;opacity:.8}
+
+    .section-title{font-family:Fredoka, Inter, sans-serif;font-weight:700;font-size:28px;margin:0 0 12px}
+    .scrollwrap{overflow:auto;display:flex;gap:16px;scroll-snap-type:x mandatory;padding-bottom:8px}
+    .media-card{flex:0 0 auto;width:360px;scroll-snap-align:start;background:white;border-radius:16px;border:1px solid #eee;box-shadow:0 6px 14px rgba(0,0,0,.06);padding:10px}
+    .media-card img, .media-card video{width:100%;height:320px;object-fit:contain;border-radius:12px;background:#fafafa}
+    @media (min-width:1200px){ .media-card{width:420px}.media-card img, .media-card video{height:360px} }
+    .hint{font-size:13px;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    form label{display:block;font-weight:600;margin-top:10px}
+    form input, form select, form textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff}
+    form textarea{min-height:88px;resize:vertical}
+    .counter{display:flex;align-items:center;gap:10px;font-weight:700}
+    .counter .dot{width:10px;height:10px;border-radius:50%;background:var(--success)}
+    .rsvp-list{display:flex;flex-direction:column;gap:10px;max-height:270px;overflow:auto}
+    .rsvp-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #eee;border-radius:12px;padding:10px}
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="hero">
+      <div class="card">
+        <p class="pill">🎂 First Birthday • You’re invited!</p>
+        <h1 class="title">Sung Yi Yang turns <span style="color:var(--primary)">One</span> 🎉</h1>
+        <p class="subtitle">Come celebrate with cake, cuddles, and lots of balloons!</p>
+        <div class="info">
+          <div class="info-row"><div class="info-icon">📛</div><div><strong>Name</strong> <div>Sung Yi Yang</div></div></div>
+          <div class="info-row"><div class="info-icon">📅</div><div><strong>Date</strong> <div>22nd Nov</div></div></div>
+          <div class="info-row"><div class="info-icon">📍</div><div><strong>Venue</strong> <div>Our Residence, Taman Kasturi</div></div></div>
+        </div>
+        <div class="cta">
+          <a href="#rsvp" class="btn btn-primary">RSVP Now</a>
+          <span class="badge">👨‍👩‍👧‍👦 <span id="attending">Attending: 0</span></span>
+        </div>
+      </div>
+      <div class="card illustration">
+        <img src="photos/cartoon.png" alt="Cartoon illustration of Yi Yang" />
+        <div class="confetti" id="confetti"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" id="gallery">
+      <h2 class="section-title">Photo & Video Gallery</h2>
+      <p class="hint" style="margin-top:-4px">Preloaded family photos — scroll to view.</p>
+      <div class="scrollwrap" id="mediaStrip" aria-live="polite"></div>
+    </section>
+
+    <section class="card" id="rsvp" style="margin-top:24px">
+      <div class="grid">
+        <div>
+          <h2 class="section-title">RSVP</h2>
+          <form id="rsvpForm">
+            <label for="name">Your Name</label>
+            <input id="name" name="name" placeholder="e.g., Aunt Mei" required />
+
+            <label for="guests">How many people (including you)?</label>
+            <select id="guests" name="guests">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+
+            <label for="message">Message (optional)</label>
+            <textarea id="message" name="message" placeholder="Any dietary notes or wishes ☺️"></textarea>
+
+            <div class="cta">
+              <button class="btn btn-primary" type="submit">I’m Coming 🎈</button>
+              <span class="counter" title="Live total">
+                <span class="dot"></span>
+                <span id="counterText">Attending: 0</span>
+              </span>
+            </div>
+          </form>
+        </div>
+        <div>
+          <h3 class="subtitle" style="margin:0 0 8px">Recent RSVPs</h3>
+          <div class="rsvp-list" id="rsvpList" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container" style="padding-bottom:48px">
+    <div class="card" style="text-align:center">Made with ❤️ for Yi Yang’s big day • See you on <strong>22nd Nov</strong> at <strong>Our Residence, Taman Kasturi</strong></div>
+  </footer>
+
+  <script>
+    // Confetti
+    const confetti = document.getElementById('confetti');
+    const pieces = 40;
+    if (confetti) {
+      for(let i=0;i<pieces;i++){
+        const s = document.createElement('span');
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = Math.random()*100 + '%';
+        s.style.background = ['#ff7ab6','#7ad9ff','#ffd166','#a7f3d0'][i%4];
+        s.style.transform = `rotate(${Math.random()*360}deg)`;
+        confetti.appendChild(s);
+      }
+    }
+
+    // Load photos
+    const strip = document.getElementById('mediaStrip');
+    const photoNames = ['IMG_5032.jpg','IMG_5187.jpg','IMG_5268.jpg','IMG_5705.jpg','IMG_5900.jpg','IMG_6305.jpg','IMG_6784.jpg','IMG_6830.jpg','IMG_6831.jpg'];
+    photoNames.forEach(name => {
+      const img = document.createElement('img');
+      img.src = `photos/${name}`;
+      img.alt = 'Yi Yang photo';
+      img.loading = 'lazy';
+      const card = document.createElement('div');
+      card.className = 'media-card';
+      card.appendChild(img);
+      strip.appendChild(card);
+    });
+
+    // RSVP functionality
+    const form = document.getElementById('rsvpForm');
+    const rsvpList = document.getElementById('rsvpList');
+    const counterText = document.getElementById('counterText');
+    const attendingBadge = document.getElementById('attending');
+
+    let rsvps = JSON.parse(localStorage.getItem('rsvps') || '[]');
+    renderRSVPs();
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const guests = parseInt(document.getElementById('guests').value);
+      const message = document.getElementById('message').value.trim();
+      if (!name) return alert('Please enter your name.');
+      const newRSVP = { name, guests, message, time: new Date().toLocaleString() };
+      rsvps.push(newRSVP);
+      localStorage.setItem('rsvps', JSON.stringify(rsvps));
+      form.reset();
+      renderRSVPs();
+      alert('Thank you for RSVPing! 🎉');
+    });
+
+    function renderRSVPs(){
+      rsvpList.innerHTML = '';
+      let total = 0;
+      rsvps.slice().reverse().forEach(r => {
+        total += r.guests;
+        const div = document.createElement('div');
+        div.className = 'rsvp-item';
+        div.innerHTML = `<div><strong>${r.name}</strong><br><span class='hint'>${r.message || ''}</span></div><div>${r.guests} attending</div>`;
+        rsvpList.appendChild(div);
+      });
+      counterText.textContent = `Attending: ${total}`;
+      attendingBadge.textContent = `Attending: ${total}`;
+    }
+  </script>
+</body>
+</html>
