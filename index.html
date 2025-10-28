@@ -19,6 +19,7 @@
       --muted: #6b7280;
       --ring: #ffd4e9;
       --success: #16a34a;
+      --danger: #ef4444;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -70,6 +71,10 @@
     .counter .dot{width:10px;height:10px;border-radius:50%;background:var(--success)}
     .rsvp-list{display:flex;flex-direction:column;gap:10px;max-height:270px;overflow:auto}
     .rsvp-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #eee;border-radius:12px;padding:10px}
+
+    .status{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:50;max-width:92vw}
+    .toast{background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;gap:10px;align-items:center}
+    .toast.err{background:#991b1b}
   </style>
 </head>
 <body>
@@ -81,7 +86,7 @@
         <p class="subtitle">Come celebrate with love, cakes, and lots of balloons!</p>
         <div class="info">
           <div class="info-row"><div class="info-icon">📛</div><div><strong>Name</strong> <div>Sung Yi Yang</div></div></div>
-          <div class="info-row"><div class="info-icon">📅</div><div><strong>Date</strong> <div>22nd November 2025, 6.30PM</div></div></div>
+          <div class="info-row"><div class="info-icon">📅</div><div><strong>Date</strong> <div>22nd November 2025</div></div></div>
           <div class="info-row"><div class="info-icon">📍</div><div><strong>Venue</strong> <div>Our Residence, Taman Kasturi</div></div></div>
         </div>
         <div class="cta">
@@ -142,35 +147,107 @@
   </main>
 
   <footer class="container" style="padding-bottom:48px">
-    <div class="card" style="text-align:center">Made with ❤️ for Yi Yang’s big day • See you on <strong>22nd of November 2025,6.30PM!</strong></div>
+    <div class="card" style="text-align:center">Made with ❤️ for Yi Yang’s big day • See you on <strong>22nd Nov</strong> at <strong>Our Residence, Taman Kasturi</strong></div>
   </footer>
 
-  <script>
-    const INTEGRATION_MODE = 'DIRECT_API';
-    const SHEET_ID = '1YE791pBb2A4tTaXxxDnvNjw9og-TUSbFkqg2s1A5NZk';
-    const API_KEY  = 'AIzaSyDSgs_GI5sLXr1FNjR8yEfasMbirRHQOHs';
-    const SHEET_NAME = 'YYbirthday';
+  <div class="status" aria-live="polite" aria-atomic="true" id="status"></div>
 
-    async function saveToGoogle(row){
-      try {
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME)}!A:D:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
-        const body = { values: [[row.name, row.guests, row.message, row.time]] };
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-        if (!res.ok) {
-          const text = await res.text();
-          console.error('Sheets API error:', res.status, text);
-          return false;
-        }
-        return true;
-      } catch (err) {
-        console.error('Save to Google failed:', err);
-        return false;
+  <script>
+    const SHEET_ID   = '1YE791pBb2A4tTaXxxDnvNjw9og-TUSbFkqg2s1A5NZk';
+    const SHEET_NAME = 'YYbirthday';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzrdXz394XTWBYaooSpX3MNOgWt1xGlOtDbIOKD7l8yMdh-v73zNocBfmIjgByIOJToQ/exec';
+
+    function toast(msg, isErr=false){
+      const host = document.getElementById('status');
+      const div = document.createElement('div');
+      div.className = 'toast' + (isErr ? ' err' : '');
+      div.textContent = msg;
+      host.appendChild(div);
+      setTimeout(()=>div.remove(),4000);
+    }
+
+    const confetti = document.getElementById('confetti');
+    const pieces = 40;
+    if (confetti) {
+      for(let i=0;i<pieces;i++){
+        const s = document.createElement('span');
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = Math.random()*100 + '%';
+        s.style.background = ['#ff7ab6','#7ad9ff','#ffd166','#a7f3d0'][i%4];
+        s.style.transform = `rotate(${Math.random()*360}deg)`;
+        confetti.appendChild(s);
       }
     }
+
+    const strip = document.getElementById('mediaStrip');
+    const photoNames = ['IMG_5032.jpg','IMG_5187.jpg','IMG_5268.jpg','IMG_5705.jpg','IMG_5900.jpg','IMG_6305.jpg','IMG_6784.jpg','IMG_6830.jpg','IMG_6831.jpg'];
+    photoNames.forEach(name => {
+      const img = document.createElement('img');
+      img.src = `photos/${name}`;
+      img.alt = 'Yi Yang photo';
+      img.loading = 'lazy';
+      const card = document.createElement('div');
+      card.className = 'media-card';
+      card.appendChild(img);
+      strip.appendChild(card);
+    });
+
+    const form = document.getElementById('rsvpForm');
+    const rsvpList = document.getElementById('rsvpList');
+    const counterText = document.getElementById('counterText');
+    const attendingBadge = document.getElementById('attending');
+
+    const LS_KEY = 'yiyang_rsvps_v1';
+
+    function escapeHtml(s=''){return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
+    function loadLocal(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; } }
+    function saveLocal(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+
+    function renderRSVPs(){
+      const data = loadLocal();
+      let total = 0;
+      rsvpList.innerHTML = '';
+      data.slice().reverse().forEach(r => {
+        total += parseInt(r.guests)||0;
+        const div = document.createElement('div');
+        div.className = 'rsvp-item';
+        div.innerHTML = `<div><strong>${escapeHtml(r.name)}</strong><br><span class='hint'>${escapeHtml(r.message||'')}</span></div><div>${r.guests} attending</div>`;
+        rsvpList.appendChild(div);
+      });
+      counterText.textContent = `Attending: ${total}`;
+      attendingBadge.textContent = `Attending: ${total}`;
+    }
+
+    renderRSVPs();
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const guests = parseInt(document.getElementById('guests').value)||1;
+      const message = document.getElementById('message').value.trim();
+      if(!name){ toast('Please enter your name.', true); return; }
+
+      const row = { name, guests, message, time: new Date().toLocaleString() };
+
+      const arr = loadLocal();
+      arr.push(row); saveLocal(arr); renderRSVPs();
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(row)
+        });
+        const data = await res.json();
+        if(data.ok){ toast('✅ RSVP saved to Google Sheet!'); }
+        else { toast('⚠️ Google Sheet save failed.', true); }
+      } catch (err) {
+        console.error(err);
+        toast('⚠️ Unable to connect to Google Script.', true);
+      }
+
+      form.reset();
+    });
   </script>
 </body>
 </html>
