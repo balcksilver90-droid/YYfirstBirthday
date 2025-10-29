@@ -19,7 +19,6 @@
       --muted: #6b7280;
       --ring: #ffd4e9;
       --success: #16a34a;
-      --danger: #ef4444;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -48,33 +47,26 @@
     .btn-primary{background:var(--primary);color:white;box-shadow:0 4px 14px rgba(255,122,182,.4)}
     .btn-primary:hover{background:var(--primary-600)}
     .btn:active{transform:translateY(1px)}
-    .badge{display:inline-flex;align-items:center;gap:8px;background:#ecfeff;border:1px solid #baeaff;padding:8px 12px;border-radius:999px;font-size:14px}
 
     .illustration{position:relative;border-radius:24px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fffaf8;}
     .illustration img{width:100%;height:auto;max-width:100%;object-fit:contain;border-radius:24px;}
-    .confetti{position:absolute;inset:0;pointer-events:none}
-    .confetti span{position:absolute;width:10px;height:16px;border-radius:2px;opacity:.8}
 
     .section-title{font-family:Fredoka, Inter, sans-serif;font-weight:700;font-size:28px;margin:0 0 12px}
     .scrollwrap{overflow:auto;display:flex;gap:16px;scroll-snap-type:x mandatory;padding-bottom:8px}
     .media-card{flex:0 0 auto;width:360px;scroll-snap-align:start;background:white;border-radius:16px;border:1px solid #eee;box-shadow:0 6px 14px rgba(0,0,0,.06);padding:10px}
     .media-card img, .media-card video{width:100%;height:320px;object-fit:contain;border-radius:12px;background:#fafafa}
     @media (min-width:1200px){ .media-card{width:420px}.media-card img, .media-card video{height:360px} }
-    .hint{font-size:13px;color:var(--muted)}
 
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}}
-    form label{display:block;font-weight:600;margin-top:10px}
-    form input, form select, form textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff}
-    form textarea{min-height:88px;resize:vertical}
-    .counter{display:flex;align-items:center;gap:10px;font-weight:700}
-    .counter .dot{width:10px;height:10px;border-radius:50%;background:var(--success)}
-    .rsvp-list{display:flex;flex-direction:column;gap:10px;max-height:270px;overflow:auto}
-    .rsvp-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #eee;border-radius:12px;padding:10px}
-
-    .status{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:50;max-width:92vw}
-    .toast{background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;gap:10px;align-items:center}
-    .toast.err{background:#991b1b}
+    /* RSVP Elegant Styling */
+    #rsvp.card {
+      background: linear-gradient(135deg, #ffe9f2, #fffafc);
+      border: 1px solid #ffd4e9;
+      box-shadow: 0 10px 30px rgba(255, 122, 182, 0.15);
+    }
+    form label{display:block;font-weight:600;margin-top:12px;color:#6b5560}
+    form input, form select, form textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #f3c7da;background:#fffdfd;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:border-color .2s}
+    form input:focus, form select:focus, form textarea:focus{outline:none;border-color:#ff7ab6;box-shadow:0 0 0 3px rgba(255,122,182,.2)}
+    form textarea{min-height:90px;resize:vertical}
   </style>
 </head>
 <body>
@@ -86,17 +78,15 @@
         <p class="subtitle">Come celebrate with love, cakes, and lots of balloons!</p>
         <div class="info">
           <div class="info-row"><div class="info-icon">📛</div><div><strong>Name</strong> <div>Sung Yi Yang</div></div></div>
-          <div class="info-row"><div class="info-icon">📅</div><div><strong>Date</strong> <div>22nd November 2025, 6.30PM</div></div></div>
+          <div class="info-row"><div class="info-icon">📅</div><div><strong>Date</strong> <div>22nd November 2025</div></div></div>
           <div class="info-row"><div class="info-icon">📍</div><div><strong>Venue</strong> <div>Our Residence, Taman Kasturi</div></div></div>
         </div>
         <div class="cta">
           <a href="#rsvp" class="btn btn-primary">RSVP Now</a>
-          <span class="badge">👨‍👩‍👧‍👦 <span id="attending">Attending: 0</span></span>
         </div>
       </div>
       <div class="card illustration">
         <img src="photos/IMG_6831.jpg" alt="Cartoon illustration of Yi Yang" />
-        <div class="confetti" id="confetti"></div>
       </div>
     </div>
   </header>
@@ -104,150 +94,83 @@
   <main class="container">
     <section class="card" id="gallery">
       <h2 class="section-title">Photo & Video Gallery</h2>
-      <p class="hint" style="margin-top:-4px">Preloaded family photos — scroll to view.</p>
-      <div class="scrollwrap" id="mediaStrip" aria-live="polite"></div>
+      <div class="scrollwrap">
+        <div class="media-card"><img src="photos/IMG_5032.jpg" alt="Photo 1"></div>
+        <div class="media-card"><img src="photos/IMG_5187.jpg" alt="Photo 2"></div>
+        <div class="media-card"><img src="photos/IMG_5268.jpg" alt="Photo 3"></div>
+        <div class="media-card"><img src="photos/IMG_5705.jpg" alt="Photo 4"></div>
+        <div class="media-card"><img src="photos/IMG_5900.jpg" alt="Photo 5"></div>
+        <div class="media-card"><img src="photos/IMG_6305.jpg" alt="Photo 6"></div>
+        <div class="media-card"><img src="photos/IMG_6784.jpg" alt="Photo 7"></div>
+        <div class="media-card"><img src="photos/IMG_6830.jpg" alt="Photo 8"></div>
+      </div>
     </section>
 
-    <section class="card" id="rsvp" style="margin-top:24px">
-      <div class="grid">
-        <div>
-          <h2 class="section-title">RSVP</h2>
-          <form id="rsvpForm">
-            <label for="name">Your Name</label>
-            <input id="name" name="name" placeholder="e.g., Aunt Mei" required />
+    <section class="card" id="rsvp">
+      <h2 class="section-title">RSVP</h2>
+      <form id="rsvpForm" action="https://formspree.io/f/xyzbwaep" method="POST">
+        <label for="name">Your Name</label>
+        <input id="name" name="name" placeholder="e.g., Aunt Mei" required />
 
-            <label for="guests">How many people (including you)?</label>
-            <select id="guests" name="guests">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
+        <label for="guests">How many attending?</label>
+        <select id="guests" name="guests" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
 
-            <label for="message">Message (optional)</label>
-            <textarea id="message" name="message" placeholder="Any dietary notes or wishes ☺️"></textarea>
+        <label for="message">Your Wishes or Notes</label>
+        <textarea id="message" name="message" placeholder="Your kind wishes for Yi Yang 💖"></textarea>
 
-            <div class="cta">
-              <button class="btn btn-primary" type="submit">I’m Coming 🎈</button>
-              <span class="counter" title="Live total">
-                <span class="dot"></span>
-                <span id="counterText">Attending: 0</span>
-              </span>
-            </div>
-          </form>
-        </div>
-        <div>
-          <h3 class="subtitle" style="margin:0 0 8px">Recent RSVPs</h3>
-          <div class="rsvp-list" id="rsvpList" aria-live="polite"></div>
+        <button class="btn btn-primary" type="submit" style="margin-top:14px;">I’m Coming 🎈</button>
+      </form>
+
+      <div id="thanksModal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:60;">
+        <div style="background:#fff;padding:22px 18px;border-radius:16px;max-width:92vw;width:520px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25);">
+          <div style="font-family:Fredoka,Inter,sans-serif;font-size:22px;font-weight:700;margin-bottom:8px;">Thank you very much!</div>
+          <p style="margin:0 0 14px;color:#374151">your email has reached Feizai HAO.</p>
+          <button id="closeModal" class="btn btn-primary" style="margin-top:6px;">Close</button>
         </div>
       </div>
+
+      <script>
+        const form = document.getElementById('rsvpForm');
+        const modal = document.getElementById('thanksModal');
+        const closeBtn = document.getElementById('closeModal');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const formData = new FormData(form);
+          try {
+            const res = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok) {
+              modal.style.display = 'flex';
+              form.reset();
+            } else {
+              alert('Oops! Something went wrong. Please try again.');
+            }
+          } catch {
+            alert('Unable to send RSVP. Please check your connection.');
+          }
+        });
+
+        closeBtn.addEventListener('click', () => modal.style.display = 'none');
+        modal.addEventListener('click', (e) => {
+          if (e.target.id === 'thanksModal') modal.style.display = 'none';
+        });
+      </script>
     </section>
   </main>
 
   <footer class="container" style="padding-bottom:48px">
-    <div class="card" style="text-align:center">Made with ❤️ for Yi Yang’s big day • See you on <strong>22nd November 2025,6.30PM!</strong></div>
+    <div class="card" style="text-align:center">Made with ❤️ for Yi Yang’s big day • See you on <strong>22nd Nov</strong> at <strong>Our Residence, Taman Kasturi</strong></div>
   </footer>
-
-  <div class="status" aria-live="polite" aria-atomic="true" id="status"></div>
-
-  <script>
-    const SHEET_ID   = '1YE791pBb2A4tTaXxxDnvNjw9og-TUSbFkqg2s1A5NZk';
-    const SHEET_NAME = 'YYbirthday';
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzrdXz394XTWBYaooSpX3MNOgWt1xGlOtDbIOKD7l8yMdh-v73zNocBfmIjgByIOJToQ/exec';
-
-    function toast(msg, isErr=false){
-      const host = document.getElementById('status');
-      const div = document.createElement('div');
-      div.className = 'toast' + (isErr ? ' err' : '');
-      div.textContent = msg;
-      host.appendChild(div);
-      setTimeout(()=>div.remove(),4000);
-    }
-
-    const confetti = document.getElementById('confetti');
-    const pieces = 40;
-    if (confetti) {
-      for(let i=0;i<pieces;i++){
-        const s = document.createElement('span');
-        s.style.left = Math.random()*100 + '%';
-        s.style.top = Math.random()*100 + '%';
-        s.style.background = ['#ff7ab6','#7ad9ff','#ffd166','#a7f3d0'][i%4];
-        s.style.transform = `rotate(${Math.random()*360}deg)`;
-        confetti.appendChild(s);
-      }
-    }
-
-    const strip = document.getElementById('mediaStrip');
-    const photoNames = ['IMG_5032.jpg','IMG_5187.jpg','IMG_5268.jpg','IMG_5705.jpg','IMG_5900.jpg','IMG_6305.jpg','IMG_6784.jpg','IMG_6830.jpg','IMG_6831.jpg'];
-    photoNames.forEach(name => {
-      const img = document.createElement('img');
-      img.src = `photos/${name}`;
-      img.alt = 'Yi Yang photo';
-      img.loading = 'lazy';
-      const card = document.createElement('div');
-      card.className = 'media-card';
-      card.appendChild(img);
-      strip.appendChild(card);
-    });
-
-    const form = document.getElementById('rsvpForm');
-    const rsvpList = document.getElementById('rsvpList');
-    const counterText = document.getElementById('counterText');
-    const attendingBadge = document.getElementById('attending');
-
-    const LS_KEY = 'yiyang_rsvps_v1';
-
-    function escapeHtml(s=''){return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
-    function loadLocal(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; } }
-    function saveLocal(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
-
-    function renderRSVPs(){
-      const data = loadLocal();
-      let total = 0;
-      rsvpList.innerHTML = '';
-      data.slice().reverse().forEach(r => {
-        total += parseInt(r.guests)||0;
-        const div = document.createElement('div');
-        div.className = 'rsvp-item';
-        div.innerHTML = `<div><strong>${escapeHtml(r.name)}</strong><br><span class='hint'>${escapeHtml(r.message||'')}</span></div><div>${r.guests} attending</div>`;
-        rsvpList.appendChild(div);
-      });
-      counterText.textContent = `Attending: ${total}`;
-      attendingBadge.textContent = `Attending: ${total}`;
-    }
-
-    renderRSVPs();
-
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const guests = parseInt(document.getElementById('guests').value)||1;
-      const message = document.getElementById('message').value.trim();
-      if(!name){ toast('Please enter your name.', true); return; }
-
-      const row = { name, guests, message, time: new Date().toLocaleString() };
-
-      const arr = loadLocal();
-      arr.push(row); saveLocal(arr); renderRSVPs();
-
-      try {
-        const res = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(row)
-        });
-        const data = await res.json();
-        if(data.ok){ toast('✅ RSVP saved to Google Sheet!'); }
-        else { toast('⚠️ Google Sheet save failed.', true); }
-      } catch (err) {
-        console.error(err);
-        toast('⚠️ Unable to connect to Google Script.', true);
-      }
-
-      form.reset();
-    });
-  </script>
 </body>
 </html>
